@@ -8,6 +8,8 @@
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
+=======
+
 set $mod Mod4
 
 set $ws1 "1:console"
@@ -21,8 +23,6 @@ set $ws8 "8:ext"
 set $ws9 "9:mail"
 set $ws10 "10:enpass"
 
-set $extmonitor "VGA-1"
-set $mainmonitor "DVI-I-1"
 
 # font for window titles. ISO 10646 = Unicode
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -91,16 +91,6 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindcode $mod+d focus child
 
-workspace $ws1 output $mainmonitor
-workspace $ws2 output $mainmonitor
-workspace $ws3 output $mainmonitor
-workspace $ws4 output $mainmonitor
-workspace $ws5 output $extmonitor
-workspace $ws6 output $extmonitor
-workspace $ws7 output $extmonitor
-workspace $ws8 output $extmonitor
-workspace $ws9 output $extmonitor
-workspace $ws10 output $extmonitor
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -210,6 +200,7 @@ assign [class="^Slack|skypeforlinux"] $ws5
 assign [class="^Enpass"] $ws10
 assign [class="^Sublime"] $ws3
 assign [class="^Thunderbird"] $ws9
+assign [class="^nautilus"] $ws3
 
 exec sleep 1; gnome-terminal
 exec nm-applet
@@ -220,6 +211,7 @@ exec google-chrome https://google.com --profile-directory="Default" --app=mail.g
 exec enpass
 exec skypeforlinux
 exec slack
+exec nautilus --no-desktop > /dev/null & disown
 
 #exec sleep 1; gnome-terminal
 #exec nm-applet
@@ -238,6 +230,6 @@ bindsym --release Shift+Print exec /home/begood/.scripts/window_screenshot.sh
 ### Auto start
 # Set background
 # require `feh` installed
-exec feh --bg-fill /home/begood/Downloads/luisa-rusche-2016.jpg
+# exec feh --bg-fill /home/begood/Downloads/luisa-rusche-2016.jpg
 #force_xinerama yes
 exec --no-startup-id sleep 2 &&/home/begood/.config/i3/scripts/xrand.sh
