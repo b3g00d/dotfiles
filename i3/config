@@ -114,6 +114,8 @@ bindsym $mod+Shift+ampersand move container to workspace $ws7
 bindsym $mod+Shift+asterisk move container to workspace $ws8
 bindsym $mod+Shift+parenleft move container to workspace $ws9
 bindsym $mod+Shift+parenright move container to workspace $ws10
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 10%+ 
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 10%-
 
 # reload the configuration file
 bindsym $mod+Shift+C reload
