@@ -8,10 +8,6 @@
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
-
-exec xrandr --auto
-exec xrandr --output DVI-I-1 --primary --output VGA-1 --left-of DVI-I-1
-
 set $mod Mod4
 
 set $ws1 "1:console"
@@ -129,6 +125,8 @@ bindsym $mod+Shift+ampersand move container to workspace $ws7
 bindsym $mod+Shift+asterisk move container to workspace $ws8
 bindsym $mod+Shift+parenleft move container to workspace $ws9
 bindsym $mod+Shift+parenright move container to workspace $ws10
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 10%+ 
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 10%-
 
 # reload the configuration file
 bindsym $mod+Shift+C reload
@@ -191,15 +189,11 @@ client.focused #555555 #285577 #ffffff #2e9ef4
 focus_follows_mouse no
 
 # lock screen
-bindsym $mod+o exec /home/begood/.scripts/lock.sh
+bindsym $mod+o exec /home/begood/.config/i3/scripts/lock.sh
 
 workspace_layout tabbed
 
 
-### Auto start
-# Set background
-# require `feh` installed
-exec feh --bg-fill /home/begood/Downloads/luisa-rusche-2016.jpg
 
 
 #exec google-chrome http://vccloudvn.slack.com/
@@ -229,6 +223,23 @@ exec enpass
 exec skypeforlinux
 exec slack
 
+#exec sleep 1; gnome-terminal
+#exec nm-applet
+#exec ibus-daemon -d
+#exec gnome-sound-applet
+#exec google-chrome https://medium.com https://quora.com --profile-directory="Profile 1" --app=mail.google.com/mail/u/0
+#exec google-chrome https://google.com --profile-directory="Default" --app=mail.google.com/mail/u/0
+#exec enpass
+#exec skypeforlinux
+#exec slack
+
 bindsym $mod+m exec i3-msg workspace $ws5; execi3-msg layout splith;exec i3-msg workspace $ws2;exec i3-msg layout splith;exec i3-msg workspace $ws1;
 bindsym --release Print exec /home/begood/.scripts/snapshot.sh
 bindsym --release Shift+Print exec /home/begood/.scripts/window_screenshot.sh
+
+### Auto start
+# Set background
+# require `feh` installed
+exec feh --bg-fill /home/begood/Downloads/luisa-rusche-2016.jpg
+#force_xinerama yes
+exec --no-startup-id sleep 2 &&/home/begood/.config/i3/scripts/xrand.sh
