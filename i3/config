@@ -8,7 +8,6 @@
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
-=======
 
 set $mod Mod4
 
@@ -180,7 +179,9 @@ focus_follows_mouse no
 bindsym $mod+o exec /home/begood/.config/i3/scripts/lock.sh
 
 workspace_layout tabbed
-
+bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
+bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute
+bindsym XF86AudioMute exec amixer -q set Master toggle
 
 
 
@@ -200,7 +201,7 @@ assign [class="^Slack|skypeforlinux"] $ws5
 assign [class="^Enpass"] $ws10
 assign [class="^Sublime"] $ws3
 assign [class="^Thunderbird"] $ws9
-assign [class="^nautilus"] $ws3
+assign [class="^Nautilus"] $ws3
 
 exec sleep 1; gnome-terminal
 exec nm-applet
