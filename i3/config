@@ -115,6 +115,8 @@ bindsym $mod+Shift+ampersand move container to workspace $ws7
 bindsym $mod+Shift+asterisk move container to workspace $ws8
 bindsym $mod+Shift+parenleft move container to workspace $ws9
 bindsym $mod+Shift+parenright move container to workspace $ws10
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 10%+ 
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 10%-
 
 # reload the configuration file
 bindsym $mod+Shift+C reload
@@ -159,8 +161,29 @@ bindsym $mod+r mode "resize"
 #        }
 #}
 bar {
-          status_command i3status
-          tray_output primary               
+#    verbose yes
+    status_command i3blocks
+    i3bar_command i3bar -t
+    position top
+    font pango:Hack, FontAwesome 11
+    strip_workspace_numbers yes
+    separator_symbol "■"
+    bindsym button4 nop
+    bindsym button5 nop
+    tray_output $mainmonitor
+    tray_padding 0
+    colors {
+        statusline         $white
+        background         $transparent
+        separator          $transparent
+
+#                          BORDER       BACKGROUND   TEXT
+        focused_workspace  $transparent $transparent $darkwhite
+        inactive_workspace $transparent $transparent $white
+        active_workspace   $transparent $transparent $white
+        urgent_workspace   $darkred     $darkred     $transparent
+        binding_mode       $darkred     $darkred     $transparent
+    }
 }
 #bar {
 #        status_command i3status  #/usr/bin/i3conky #i3status 
