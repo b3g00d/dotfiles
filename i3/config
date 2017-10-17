@@ -181,8 +181,6 @@ focus_follows_mouse no
 bindsym $mod+o exec /home/begood/.config/i3/scripts/lock.sh
 
 workspace_layout tabbed
-bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
-bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute
 bindsym XF86AudioMute exec amixer -q set Master toggle
 
 
@@ -205,16 +203,16 @@ assign [class="^Sublime"] $ws3
 assign [class="^Thunderbird"] $ws9
 assign [class="^Nautilus"] $ws3
 
-exec sleep 1; gnome-terminal
-exec nm-applet
-exec ibus-daemon -d
-exec gnome-sound-applet
-exec google-chrome https://medium.com https://quora.com --profile-directory="Profile 1" --app=mail.google.com/mail/u/0
-exec google-chrome https://google.com --profile-directory="Default" --app=mail.google.com/mail/u/0
-exec enpass
-exec skypeforlinux
-exec slack
-exec nautilus --no-desktop > /dev/null & disown
+exec --no-startup-id sleep 1; gnome-terminal
+exec --no-startup-id nm-applet
+exec --no-startup-id ibus-daemon -d
+exec --no-startup-id gnome-sound-applet
+exec --no-startup-id google-chrome https://medium.com https://quora.com --profile-directory="Profile 1" --app=mail.google.com/mail/u/0
+exec --no-startup-id google-chrome https://google.com --profile-directory="Default" --app=mail.google.com/mail/u/0
+exec --no-startup-id enpass
+exec --no-startup-id skypeforlinux
+exec --no-startup-id slack
+exec --no-startup-id nautilus --no-desktop > /dev/null & disown
 
 #exec sleep 1; gnome-terminal
 #exec nm-applet
@@ -236,3 +234,5 @@ bindsym --release Shift+Print exec /home/begood/.scripts/window_screenshot.sh
 # exec feh --bg-fill /home/begood/Downloads/luisa-rusche-2016.jpg
 #force_xinerama yes
 exec --no-startup-id sleep 2 &&/home/begood/.config/i3/scripts/xrand.sh
+exec --no-startup-id "nvim +PlugUpgrade +qall" 
+exec --no-startup-id "nvim +PlugUpdate +qall" 
