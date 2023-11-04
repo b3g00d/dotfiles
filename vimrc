@@ -3,12 +3,13 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-Plug 'ycm-core/YouCompleteMe', { 'do': 'CC=gcc-8 CXX=g++-8 python3 ./install.py' }
+Plug 'ycm-core/YouCompleteMe', { 'do': 'CC=gcc-8 CXX=g++-8 python3 ./install.py --all' }
 "Plug 'powerline/powerline'
 "Plug 'uber/prototool', { 'rtp':'vim/prototool' , 'for': 'proto'}
 Plug 'rhysd/vim-healthcheck'
-Plug 'psf/black', {'for': 'python'}
+Plug 'psf/black', {'for': 'python', 'tag': '*'}
 Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 Plug 'tpope/vim-fugitive' " dành cho git
 Plug 'tpope/vim-surround' " đóng ngoặc cho vim
 Plug 'ryanoasis/vim-devicons' " Icon cho vim
@@ -23,6 +24,7 @@ Plug 'SirVer/ultisnips' "Hỗ trợ gợi ý văn bản
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets' "để tạo những snippet file
 Plug 'Chiel92/vim-autoformat'
+" comment
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -35,6 +37,9 @@ Plug 'vim-erlang/vim-erlang-runtime', {'for': 'erlang'}
 Plug 'vim-erlang/vim-erlang-omnicomplete', {'for': 'erlang'}
 Plug 'vim-erlang/vim-erlang-tags', {'for': 'erlang'}
 Plug 'vim-erlang/vim-erlang', {'for': 'erlang'}
+Plug 'ryanolsonx/vim-xit', {'for': 'xit'}
+
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 Plug 'tomlion/vim-solidity', {'for': 'solidity'}
 Plug 'sohkai/syntastic-local-solhint', {'for': 'solidity'}
@@ -57,6 +62,7 @@ Plug 'prettier/vim-prettier', {
     \ 'html',
     \ 'swift',
     \ 'solidity'] }
+Plug 'vim-latex/vim-latex', {'for': 'latex'}
 
 "Plug 'vim-scripts/ZoomWin'
 
@@ -70,9 +76,11 @@ let g:black_virtualenv="~/.vim_black"
 "autoformat
 noremap <F8> :Autoformat<CR>
 let g:formatter_yapf_style = 'facebook'
-"let g:formatdef_black = '"black -l 79 -q ".(&textwidth ? "-l".&textwidth : "")." -"'
 let g:formatters_python = ['black']
-let g:formatters_sql = ['sqlformat']
+let g:formatdef_black = '"black -l 79 -q ".(&textwidth ? "-l".&textwidth : "")." -"'
+
+let g:formatdef_buf = '"buf format"'
+let g:formatters_proto = ['buf']
 
 " default
 syntax enable
@@ -141,7 +149,10 @@ vnoremap <silent> <leader>l :exe "tabn ".g:lasttab<CR>
 "tab for switch windows
 map <Tab> <C-W>w
 map <S-Tab> <C-W>W
+
+"nerdtree
 map <C-n> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
 "So dong + Enter la jump toi so' do VD 23Enter - > nhay toi line 23
 
 
@@ -173,8 +184,6 @@ colorscheme flattened_light
 
 
 
-"NerdComment
-let g:NERDDefaultAlign = 'left'
 
 "ALE
 let g:ale_completion_enabled = 0
@@ -208,6 +217,8 @@ set clipboard^=unnamedplus
 let g:AutoPairsShortcutToggle="<M-p>"
 
 "ycm
+let g:ycm_gopls_binary_path= '/home/begood/goex/bin/gopls'
+let g:ycm_gopls_args= []
 let g:ycm_server_python_interpreter = '/usr/bin/python3'
 let g:ycm_filetype_whitelist = {
 			\ "c":1,
@@ -217,7 +228,16 @@ let g:ycm_filetype_whitelist = {
 			\ "zsh":1,
 			\ "zimbu":1,
 			\ "python":1,
+			\ "go":1,
 			\ }
+
+let g:ycm_autoclose_preview_window_after_insertion = 1
+noremap <leader>gdf :YcmCompleter GoToDefinition<CR>
+noremap <leader>gdc :YcmCompleter GoToDeClaration<CR>
+noremap <leader>gi :YcmCompleter GoToInclude<CR>
+noremap <leader>gs :YcmCompleter GoToSymbol<CR>
+noremap <leader>gt :YcmCompleter GoToType<CR>
+noremap <leader>gr :YcmCompleter GoToReferences<CR>
 
 " Set swp, backup file
 set backupdir=.backup/,~/.backup/,/tmp//
@@ -236,6 +256,7 @@ nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
 
 " fzf
+let $FZF_DEFAULT_COMMAND = 'ag --ignore .git -l -g ""'
 
 nnoremap <silent> <Leader>f :Files<CR>
 nnoremap <silent> <Leader>g :GFiles<CR>
@@ -255,3 +276,19 @@ command! -bang -nargs=* Ag
 \                 <bang>0 ? fzf#vim#with_preview('up:60%')
 \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
 \                 <bang>0)
+
+" Git search
+nnoremap <silent> <Leader>r :Ggr 
+command -nargs=+ Ggr execute 'Ggrep! -q' <q-args>
+
+" Gotests
+let g:gotests_template_dir = ''
+let g:gotests_template = ''
+
+" vim-pydocstring
+let g:pydocstring_doq_path = '/usr/local/bin/doq'
+
+" nerdcommenter
+let g:NERDCustomDelimiters = { 'proto': { 'left': '// '} }
+let g:NERDDefaultAlign = 'left'
+let g:NERDCompactSexyComs = 1
