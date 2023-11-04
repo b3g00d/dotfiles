@@ -25,6 +25,6 @@ highlight BadWhitespace ctermbg=red guibg=red
 au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 " Make trailing whitespace be flagged as bad.
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-let b:ale_fixers = {'python': ['black', 'yapf']}
+let b:ale_fixers = {'python': ['yapf']}
 let b:ale_linters = ['flake8']
-let g:ale_python_flake8_options = "--ignore=E203"
+let g:ale_python_flake8_options = "--ignore=E203,W503"
