@@ -1,6 +1,0 @@
-28/07/2017 10:46:47 - ERROR: Using Xinerama instead of RandR. This option should be avoided at all cost because it does not refresh the list of screens, so you cannot configure displays at runtime. Please check if your driver really does not support RandR and disable this option as soon as you can.
-28/07/2017 10:46:47 - i3 4.13 (2016-11-08) starting
-28/07/2017 10:46:47 - Parsing configfile /home/begood/.config/i3/config
-28/07/2017 10:46:47 - deciding for version 4 due to this line: # i3 config file (v4)
-28/07/2017 10:46:47 - [libi3] ../../i3-wm-4.13/libi3/font.c Using X font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-28/07/2017 10:46:47 - ERROR: Another window manager seems to be running (X error 10)

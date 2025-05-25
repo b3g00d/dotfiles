@@ -8,7 +8,7 @@
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
-# =======
+# 
 
 set $mod Mod4
 
@@ -17,27 +17,15 @@ set $ws2 "2:www"
 set $ws3 "3:code"
 set $ws4 "4:ssh"
 set $ws5 "5:Chat"
-set $ws6 "6:Reading"
+set $ws6 6
 set $ws7 7
 set $ws8 "8:ext"
 set $ws9 "9:mail"
 set $ws10 "10:enpass"
 
-exec_always --no-startup-id sh -c 'pkill -f back4.sh || true; sleep 0.5; exec back4.sh 0.010 "$HOME/Pictures/gif/Digital_rain_animation_small_letters_clear.gif"'
-
-
-exec --no-startup-id xrandr --output eDP-1 --primary
-
-# https://github.com/betterlockscreen/betterlockscreen?tab=readme-ov-file#i3wm-1 
-exec --no-startup-id betterlockscreen -w dim
-exec --no-startup-id source ~/.fehbg
-
-# exec --no-startup-id xss-lock -n /usr/share/docs/xss-lock/dim-screen.sh -- ~/.config/i3/scripts/lid_lock.sh -n
-
 
 # font for window titles. ISO 10646 = Unicode
-font monospace
- 
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -127,18 +115,13 @@ bindsym $mod+Shift+ampersand move container to workspace $ws7
 bindsym $mod+Shift+asterisk move container to workspace $ws8
 bindsym $mod+Shift+parenleft move container to workspace $ws9
 bindsym $mod+Shift+parenright move container to workspace $ws10
-
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 10%+ 
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 10%-
-bindsym XF86AudioMute exec amixer -D pulse set Master 1+ toggle
-
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20
 
 # reload the configuration file
 bindsym $mod+Shift+C reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+r exec "xrandr --auto", restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+E exit
 
@@ -166,7 +149,7 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym $mod+r mode "resize"
+bindsym jmod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -179,9 +162,28 @@ bindsym $mod+r mode "resize"
 #}
 bar {
 #    verbose yes
-    font pango:Source Code Pro 8
-    status_command i3status
-    tray_output primary
+    status_command i3blocks
+    i3bar_command i3bar -t
+    position top
+    font pango:Hack, FontAwesome 11
+    strip_workspace_numbers yes
+    separator_symbol "■"
+    bindsym button4 nop
+    bindsym button5 nop
+    tray_output $mainmonitor
+    tray_padding 0
+    colors {
+        statusline         $white
+        background         $transparent
+        separator          $transparent
+
+#                          BORDER       BACKGROUND   TEXT
+        focused_workspace  $transparent $transparent $darkwhite
+        inactive_workspace $transparent $transparent $white
+        active_workspace   $transparent $transparent $white
+        urgent_workspace   $darkred     $darkred     $transparent
+        binding_mode       $darkred     $darkred     $transparent
+    }
 }
 #bar {
 #        status_command i3status  #/usr/bin/i3conky #i3status 
@@ -198,10 +200,7 @@ client.focused #555555 #285577 #ffffff #2e9ef4
 focus_follows_mouse no
 
 # lock screen
-# bindsym $mod+o exec $HOME/.config/i3/scripts/i3lock-fancy-multimonitor/./lock 
-bindsym $mod+o exec betterlockscreen -l blur
-
-
+bindsym $mod+o exec /home/begood/.config/i3/scripts/lock.sh
 
 workspace_layout tabbed
 
@@ -219,27 +218,23 @@ workspace_layout tabbed
 
 # assigning
 assign [class="^Gnome-terminal"] $ws1
-assign [class="^Postman"] $ws2
 assign [class="^Google-chrome"] $ws2
-assign [class="^Telegram"] $ws5
 assign [class="^Slack|skypeforlinux"] $ws5
 assign [class="^Enpass"] $ws10
 assign [class="^Sublime"] $ws3
 assign [class="^Thunderbird"] $ws9
-assign [class="^Nautilus"] $ws3
-assign [class="^calibre"] $ws6
+assign [class="^nautilus"] $ws3
 
-exec sleep 1; gnome-terminal
-exec_always --no-startup-id /usr/bin/nm-applet --sm-disable
-#exec_always --no-startup-id /usr/bin/blueman-applet
-exec_always --no-startup-id /usr/bin/ibus-daemon -d & /usr/bin/ibus restart
-exec_always --no-startup-id gnome-sound-applet
-#exec --no-startup-id google-chrome https://medium.com https://quora.com --profile-directory="Profile 1" --app=mail.google.com/mail/u/0
-exec --no-startup-id google-chrome --app=mail.google.com/mail/u/0
-#exec --no-startup-id enpass
-#exec --no-startup-id skypeforlinux
-#exec --no-startup-id slack
-#exec --no-startup-id nautilus --no-desktop > /dev/null & disown
+exec --no-startup-id sleep 1; gnome-terminal
+exec --no-startup-id nm-applet
+exec --no-startup-id ibus-daemon -d
+exec --no-startup-id gnome-sound-applet
+exec --no-startup-id google-chrome https://medium.com https://quora.com --profile-directory="Profile 1" --app=mail.google.com/mail/u/0
+exec --no-startup-id google-chrome https://google.com --profile-directory="Default" --app=mail.google.com/mail/u/0
+exec --no-startup-id enpass
+exec --no-startup-id skypeforlinux
+exec --no-startup-id slack
+exec --no-startup-id nautilus --no-desktop > /dev/null & disown
 
 #exec sleep 1; gnome-terminal
 #exec nm-applet
@@ -252,17 +247,12 @@ exec --no-startup-id google-chrome --app=mail.google.com/mail/u/0
 #exec slack
 
 bindsym $mod+m exec i3-msg workspace $ws5; execi3-msg layout splith;exec i3-msg workspace $ws2;exec i3-msg layout splith;exec i3-msg workspace $ws1;
-bindsym --release Print exec $HOME/.config/i3/scripts/snapshot.sh
-bindsym --release Shift+Print exec $HOME/.config/i3/scripts/window_screenshot.sh
+bindsym --release Print exec /home/begood/.scripts/snapshot.sh
+bindsym --release Shift+Print exec /home/begood/.scripts/window_screenshot.sh
 
 ### Auto start
 # Set background
 # require `feh` installed
 # exec feh --bg-fill /home/begood/Downloads/luisa-rusche-2016.jpg
 #force_xinerama yes
-#exec --no-startup-id sleep 2 &&/home/begood/.config/i3/scripts/xrand.sh
-#
-
-
-# i3-gaps
-for_window [class=".*"] border pixel 0
+exec --no-startup-id sleep 2 &&/home/begood/.config/i3/scripts/xrand.sh
