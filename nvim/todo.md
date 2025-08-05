@@ -1,0 +1,3 @@
+- vim.lsp.buf.signature_help (title)
+- debug
+- copy file path

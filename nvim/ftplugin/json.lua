@@ -1,7 +1,7 @@
 local settings = {
-  shiftwidth = 3,
-  tabstop = 3,
-  softtabstop = 3,
+  shiftwidth = 2,
+  tabstop = 2,
+  softtabstop = 2,
 }
 
 for k, v in pairs(settings) do
