@@ -100,13 +100,13 @@ return {
             name = "Avante",
             opts = {},
           },
-          -- path = {
-          --   opts = {
-          --     get_cwd = function(_)
-          --       return vim.fn.getcwd()
-          --     end,
-          --   },
-          -- },
+          path = {
+            opts = {
+              get_cwd = function(_)
+                return vim.fn.getcwd()
+              end,
+            },
+          },
         },
       },
 

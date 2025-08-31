@@ -5,11 +5,10 @@ local options = {
     javascript = { "biome" },
     tsx = { "biome" },
     json = { "biome" },
-    python = { "autopep8" },
+    python = { "isort", "black" },
     yaml = { "prettier" },
     sql = { "sql_formatter" },
     html = { "biome" },
-    http = { "kulala" },
   },
 
   formatters = {
@@ -17,16 +16,16 @@ local options = {
       command = "sql-formatter",
       args = { "-l", "mysql" },
     },
-    kulala = {
-      command = "kulala-fmt",
-      args = { "format", "$FILENAME" },
-      stdin = false,
+    black = {
+      command = "black",
+      prepend_args = { "--line-length", "79" },
+      stdin = true,
     },
   },
 
   format_on_save = {
     -- These options will be passed to conform.format()
-    timeout_ms = 5000,
+    timeout_ms = 500,
     lsp_format = "fallback",
   },
 }

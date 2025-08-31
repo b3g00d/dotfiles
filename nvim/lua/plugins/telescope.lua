@@ -2,6 +2,13 @@ local actions = require "telescope.actions"
 
 local options = {
   defaults = {
+    file_ignore_patterns = {
+      -- "venv/",
+      -- "\\.venv/",
+      -- "env/",
+      -- "\\.env/",
+      -- "__pycache__/",
+    },
     prompt_prefix = "   ",
     selection_caret = "  ",
     selection_strategy = "reset",
@@ -72,7 +79,7 @@ return {
       version = "^1.0.0",
     },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    { "nvim-lua/popup.nvim", "nvim-telescope/telescope-media-files.nvim" },
+    { "nvim-lua/popup.nvim",                      "nvim-telescope/telescope-media-files.nvim" },
     {
       "nvim-telescope/telescope-frecency.nvim",
       version = "*",

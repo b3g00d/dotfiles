@@ -13,7 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 -- load plugins
 local lazy_config = {
   defaults = {
-    lazy = true, -- load plugins lazily by default
+    lazy = false, -- load plugins lazily by default
   },
   install = {
     colorscheme = { "solarized", "habamax" },

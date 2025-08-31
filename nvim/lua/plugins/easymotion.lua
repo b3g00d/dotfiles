@@ -1,6 +1,6 @@
 return {
   {
-    "smoka7/hop.nvim", -- easymotion
+    "phaazon/hop.nvim", -- easymotion
     lazy = false,
     config = function()
       require("hop").setup({
