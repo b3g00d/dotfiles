@@ -30,12 +30,17 @@ local options = {
         ["<C-j>"] = actions.cycle_history_next,
         ["<C-k>"] = actions.cycle_history_prev,
       },
-      n = {
-        ["d"] = actions.delete_buffer,
-      },
     },
   },
   pickers = {
+    buffers = {
+      mappings = {
+        n = {
+          ["d"] = actions.delete_buffer,
+        },
+      },
+    },
+
     oldfiles = {
       theme = "dropdown",
       previewer = false,
@@ -79,7 +84,7 @@ return {
       version = "^1.0.0",
     },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    { "nvim-lua/popup.nvim",                      "nvim-telescope/telescope-media-files.nvim" },
+    { "nvim-lua/popup.nvim", "nvim-telescope/telescope-media-files.nvim" },
     {
       "nvim-telescope/telescope-frecency.nvim",
       version = "*",

@@ -1,5 +1,25 @@
 local map = vim.keymap.set
 
+-- vim.lsp.config("pylsp", {
+--   settings = {
+--     pylsp = {
+--       plugins = {
+--         pycodestyle = {
+--           ignore = { "W391" },
+--           maxLineLength = 79,
+--         },
+--         rope_autoimport = {
+--           enabled = true,
+--           completions = { enabled = true },
+--           code_actions = { enabled = true },
+--         },
+--         rope_completion = { enabled = true },
+--         rope_rename = { enabled = true },
+--       },
+--     },
+--   },
+-- })
+
 return {
   "neovim/nvim-lspconfig",
   lazy = false,
@@ -48,18 +68,28 @@ return {
         focusable = false,
         silent = true,
       })
-      if not ok then vim.notify("LSP hover failed", vim.log.levels.WARN) end
+      if not ok then
+        vim.notify("LSP hover failed", vim.log.levels.WARN)
+      end
     end, { desc = "show documentation" })
 
     local servers = {
-      gopls = {},
+      gopls = {
+        settings = {
+          gopls = {
+            -- Ngăn gopls đảo workspace khi bạn mở file từ project khác
+            experimentalWorkspaceModule = false,
+            expandWorkspaceToModule = false,
+          },
+        },
+      },
 
       lua_ls = {
         settings = {
           Lua = {
             runtime = {
               -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-              version = 'LuaJIT',
+              version = "LuaJIT",
             },
             diagnostics = {
               globals = { "vim" },
@@ -67,12 +97,12 @@ return {
             workspace = {
               checkThirdParty = false,
               library = {
-                vim.env.VIMRUNTIME
+                vim.env.VIMRUNTIME,
                 -- Depending on the usage, you might want to add additional paths
                 -- here.
                 -- '${3rd}/luv/library'
                 -- '${3rd}/busted/library'
-              }
+              },
             },
             completion = {
               callSnippet = "Replace",
@@ -85,8 +115,28 @@ return {
       html = {},
       cssls = {},
       tailwindcss = {},
-
       pyright = {},
+      ruff = {},
+
+      -- pylsp = {
+      --   settings = {
+      --     pylsp = {
+      --       plugins = {
+      --         pycodestyle = {
+      --           ignore = { "W391" },
+      --           maxLineLength = 100,
+      --         },
+      --         rope_autoimport = {
+      --           enabled = true,
+      --           completions = { enabled = true },
+      --           code_actions = { enabled = true },
+      --         },
+      --         rope_completion = { enabled = true },
+      --         rope_rename = { enabled = true },
+      --       },
+      --     },
+      --   },
+      -- },
 
       jsonls = {},
     }
