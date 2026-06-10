@@ -80,6 +80,7 @@ return {
             -- Ngăn gopls đảo workspace khi bạn mở file từ project khác
             experimentalWorkspaceModule = false,
             expandWorkspaceToModule = false,
+            buildFlags = { "-tags=test" },
           },
         },
       },

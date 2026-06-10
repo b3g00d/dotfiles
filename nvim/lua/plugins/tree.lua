@@ -57,8 +57,10 @@ return {
           ["f"] = "noop",
         },
       },
+      bind_to_cwd = false,
       follow_current_file = {
-        enabled = false,
+        enabled = true,
+        leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
       },
     },
   },

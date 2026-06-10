@@ -24,3 +24,8 @@ vim.filetype.add {
     ["http"] = "http",
   },
 }
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+  callback = function()
+    vim.cmd("cd " .. vim.fn.getcwd(-1))
+  end,
+})
