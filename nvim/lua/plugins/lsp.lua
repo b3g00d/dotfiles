@@ -1,25 +1,5 @@
 local map = vim.keymap.set
 
--- vim.lsp.config("pylsp", {
---   settings = {
---     pylsp = {
---       plugins = {
---         pycodestyle = {
---           ignore = { "W391" },
---           maxLineLength = 79,
---         },
---         rope_autoimport = {
---           enabled = true,
---           completions = { enabled = true },
---           code_actions = { enabled = true },
---         },
---         rope_completion = { enabled = true },
---         rope_rename = { enabled = true },
---       },
---     },
---   },
--- })
-
 return {
   "neovim/nvim-lspconfig",
   lazy = false,
@@ -35,18 +15,18 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
       callback = function(event)
-        local map = function(keys, func, desc, mode)
+        local bmap = function(keys, func, desc, mode)
           mode = mode or "n"
           vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
         end
         local telescope = require "telescope.builtin"
 
-        map("gd", telescope.lsp_definitions, "Goto Definition")
-        map("gD", vim.lsp.buf.declaration, "Goto Declaration")
-        map("gR", telescope.lsp_references, "Goto References")
-        map("gI", telescope.lsp_implementations, "Goto Implementation")
-        map("<leader>q", vim.lsp.buf.code_action, "Code Action", { "n", "x" })
-        map("<leader>rn", vim.lsp.buf.rename, "Rename")
+        bmap("gd", telescope.lsp_definitions, "Goto Definition")
+        bmap("gD", vim.lsp.buf.declaration, "Goto Declaration")
+        bmap("gR", telescope.lsp_references, "Goto References")
+        bmap("gI", telescope.lsp_implementations, "Goto Implementation")
+        bmap("<leader>q", vim.lsp.buf.code_action, "Code Action", { "n", "x" })
+        bmap("<leader>rn", vim.lsp.buf.rename, "Rename")
       end,
     })
 
@@ -77,10 +57,15 @@ return {
       gopls = {
         settings = {
           gopls = {
-            -- Ngăn gopls đảo workspace khi bạn mở file từ project khác
-            experimentalWorkspaceModule = false,
+            -- Ngăn gopls đảo workspace khi mở file từ project khác
+            -- (experimentalWorkspaceModule đã bị gopls deprecated -> bỏ)
             expandWorkspaceToModule = false,
-            buildFlags = { "-tags=test" },
+            buildFlags = { "-tags=test" }, -- nếu tag là test
+            -- LƯU Ý: buildFlags là GLOBAL cho toàn workspace.
+            -- "-tags=test" khiến gopls build mọi package dưới tag `test`,
+            -- làm các file có `//go:build !test` không resolve được.
+            -- Chỉ bật lại khi project thực sự cần:
+            -- buildFlags = { "-tags=test" },
           },
         },
       },
@@ -89,7 +74,7 @@ return {
         settings = {
           Lua = {
             runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+              -- LuaJIT trong trường hợp Neovim
               version = "LuaJIT",
             },
             diagnostics = {
@@ -99,10 +84,6 @@ return {
               checkThirdParty = false,
               library = {
                 vim.env.VIMRUNTIME,
-                -- Depending on the usage, you might want to add additional paths
-                -- here.
-                -- '${3rd}/luv/library'
-                -- '${3rd}/busted/library'
               },
             },
             completion = {
@@ -118,6 +99,7 @@ return {
       tailwindcss = {},
       pyright = {},
       ruff = {},
+      jsonls = {},
 
       -- pylsp = {
       --   settings = {
@@ -138,27 +120,33 @@ return {
       --     },
       --   },
       -- },
-
-      jsonls = {},
     }
 
     local original_capabilities = vim.lsp.protocol.make_client_capabilities()
     local capabilities = require("blink.cmp").get_lsp_capabilities(original_capabilities)
 
     vim.lsp.buf.signature_help = function() end
-    local ensure_installed = vim.tbl_keys(servers or {})
+
+    -- API mới (Neovim 0.11): vim.lsp.config thay cho require('lspconfig').setup
+    -- Áp capabilities cho TẤT CẢ server qua wildcard '*'
+    vim.lsp.config("*", {
+      capabilities = capabilities,
+    })
+
+    -- Apply settings riêng cho từng server
+    for server_name, server_opts in pairs(servers) do
+      if next(server_opts) ~= nil then
+        vim.lsp.config(server_name, server_opts)
+      end
+    end
+
+    local ensure_installed = vim.tbl_keys(servers)
     require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
+    -- mason-lspconfig v2: tự động vim.lsp.enable() các server đã cài
+    -- (automatic_enable mặc định = true, không còn handlers/automatic_installation)
     require("mason-lspconfig").setup {
       ensure_installed = ensure_installed,
-      automatic_installation = true,
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-          require("lspconfig")[server_name].setup(server)
-        end,
-      },
     }
   end,
 }

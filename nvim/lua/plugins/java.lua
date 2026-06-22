@@ -14,20 +14,19 @@ return {
     },
     config = function()
       local function resolve_java_home()
-        -- 1. Nếu user đã set JAVA_HOME trong shell (sdkman, asdf, manual) → dùng luôn
+        -- 1. JAVA_HOME shell set sẵn (sdk use per-project) → ưu tiên
         local from_env = vim.env.JAVA_HOME
         if from_env and vim.fn.isdirectory(from_env) == 1 then
           return from_env
         end
 
-        -- 2. Fallback: hỏi `java` binary đang active xem nó ở đâu
-        local handle = io.popen "java -XshowSettings:property -version 2>&1 | grep 'java.home'"
-        if handle then
-          local result = handle:read "*a"
-          handle:close()
-          local path = result:match "java%.home%s*=%s*(.-)%s*$"
-          if path and vim.fn.isdirectory(path) == 1 then
-            return path
+        -- 2. Suy thẳng từ `java` mà nvim nhìn thấy (bulletproof, không cần shell/env)
+        local java_bin = vim.fn.exepath "java"
+        if java_bin ~= "" then
+          local resolved = vim.fn.resolve(java_bin) -- .../current/bin/java → .../21.0.5-tem/bin/java
+          local home = vim.fn.fnamemodify(resolved, ":h:h") -- bỏ /bin/java → JAVA_HOME
+          if vim.fn.isdirectory(home) == 1 then
+            return home
           end
         end
 
