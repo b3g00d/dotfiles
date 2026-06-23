@@ -9,6 +9,7 @@ local options = {
     yaml = { "prettier" },
     sql = { "sql_formatter" },
     html = { "biome" },
+    java = { "google-java-format" },
   },
 
   formatters = {
@@ -20,6 +21,9 @@ local options = {
       command = "black",
       prepend_args = { "--line-length", "79" },
       stdin = true,
+    },
+    google_java_format = {
+      prepend_args = { "--aosp" },
     },
   },
 

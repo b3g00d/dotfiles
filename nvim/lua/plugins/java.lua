@@ -43,6 +43,13 @@ return {
 
       require("java").setup { jdk = { auto_install = false } }
       vim.lsp.enable "jdtls"
+      vim.lsp.config("jdtls", {
+        settings = {
+          java = {
+            saveActions = { organizeImports = true },
+          },
+        },
+      })
     end,
   },
 }
