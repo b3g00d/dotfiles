@@ -5,8 +5,8 @@ return {
   lazy = false,
   dependencies = {
     "saghen/blink.cmp",
-    { "williamboman/mason.nvim", opts = {} },
-    "williamboman/mason-lspconfig.nvim",
+    { "mason-org/mason.nvim", opts = {} },
+    "mason-org/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     "nvim-telescope/telescope.nvim",
   },
@@ -19,12 +19,31 @@ return {
           mode = mode or "n"
           vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
         end
+        -- Có server nào support textDocument/implementation không?
+        local function has_impl()
+          for _, client in ipairs(vim.lsp.get_clients { bufnr = event.buf }) do
+            if client.server_capabilities.implementationProvider then
+              return true
+            end
+          end
+          return false
+        end
         local telescope = require "telescope.builtin"
 
         bmap("gd", telescope.lsp_definitions, "Goto Definition")
         bmap("gD", vim.lsp.buf.declaration, "Goto Declaration")
         bmap("gR", telescope.lsp_references, "Goto References")
-        bmap("gI", telescope.lsp_implementations, "Goto Implementation")
+        -- gI thông minh: Go/Java dùng LSP thật; Python (pyright) rơi xuống grep `def <name>`
+        bmap("gI", function()
+          if has_impl() then
+            telescope.lsp_implementations()
+          else
+            local word = vim.fn.expand "<cword>"
+            local ft = vim.bo[event.buf].filetype
+            local search = (ft == "python") and ("def " .. word) or word
+            telescope.grep_string { search = search, use_regex = false }
+          end
+        end, "Goto Implementation")
         bmap("<leader>q", vim.lsp.buf.code_action, "Code Action", { "n", "x" })
         bmap("<leader>rn", vim.lsp.buf.rename, "Rename")
       end,
@@ -147,6 +166,7 @@ return {
     -- (automatic_enable mặc định = true, không còn handlers/automatic_installation)
     require("mason-lspconfig").setup {
       ensure_installed = ensure_installed,
+      automatic_enable = { exclude = { "jdtls" } }, -- nhường jdtls cho nvim-java
     }
   end,
 }
