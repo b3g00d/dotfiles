@@ -1,7 +1,7 @@
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    go = { "golines", "goimports" },
+    go = { "golangci-lint" },
     javascript = { "biome" },
     tsx = { "biome" },
     json = { "biome" },
@@ -13,6 +13,10 @@ local options = {
   },
 
   formatters = {
+    ["golangci-lint"] = {
+      -- Dùng config global (formatters: goimports, golines)
+      args = { "fmt", "--stdin", "--config", vim.fn.expand "~/.golangci.yml" },
+    },
     sql_formatter = {
       command = "sql-formatter",
       args = { "-l", "mysql" },

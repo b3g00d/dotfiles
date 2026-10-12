@@ -1,121 +1,161 @@
 {
-    "hooks": {
-        "PreToolUse": [
-            {
-                "matcher": "Bash",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "~/.claude/hooks/cbm-code-discovery-gate",
-                        "timeout": 5,
-                        "if": "Bash(grep *)"
-                    },
-                    {
-                        "type": "command",
-                        "command": "~/.claude/hooks/cbm-code-discovery-gate",
-                        "timeout": 5,
-                        "if": "Bash(find *)"
-                    },
-                    {
-                        "type": "command",
-                        "command": "rtk hook claude"
-                    }
-                ]
-            },
-            {
-                "matcher": "Grep|Glob",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "~/.claude/hooks/cbm-code-discovery-gate",
-                        "timeout": 5
-                    }
-                ]
-            }
-        ],
-        "SessionStart": [
-            {
-                "matcher": "*",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "bash '/home/begood/.claude/hooks/herdr-agent-state.sh' session",
-                        "timeout": 10
-                    }
-                ]
-            },
-            {
-                "matcher": "startup",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "~/.claude/hooks/cbm-session-reminder"
-                    }
-                ]
-            },
-            {
-                "matcher": "resume",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "~/.claude/hooks/cbm-session-reminder"
-                    }
-                ]
-            },
-            {
-                "matcher": "clear",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "~/.claude/hooks/cbm-session-reminder"
-                    }
-                ]
-            },
-            {
-                "matcher": "compact",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "~/.claude/hooks/cbm-session-reminder"
-                    }
-                ]
-            }
-        ],
-        "SubagentStart": [
-            {
-                "matcher": "*",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "~/.claude/hooks/cbm-subagent-reminder"
-                    }
-                ]
-            }
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-code-discovery-gate",
+            "if": "Bash(grep *)",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-code-discovery-gate",
+            "if": "Bash(find *)",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
         ]
+      },
+      {
+        "matcher": "Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-code-discovery-gate",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/home/begood/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-session-reminder"
+          }
+        ]
+      },
+      {
+        "matcher": "resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-session-reminder"
+          }
+        ]
+      },
+      {
+        "matcher": "clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-session-reminder"
+          }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-session-reminder"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-subagent-reminder"
+          }
+        ]
+      }
+    ]
+  },
+  "worktree": {
+    "baseRef": "head"
+  },
+  "enabledPlugins": {
+    "claude-code-setup@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "caveman@caveman": true,
+    "typesafe@typesafe-ai": true
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
     },
-    "enabledPlugins": {
-        "claude-code-setup@claude-plugins-official": true,
-        "code-review@claude-plugins-official": true,
-        "gopls-lsp@claude-plugins-official": true,
-        "pyright-lsp@claude-plugins-official": true,
-        "superpowers@claude-plugins-official": true,
-        "typescript-lsp@claude-plugins-official": true,
-        "caveman@caveman": true
-    },
-    "extraKnownMarketplaces": {
-        "caveman": {
-            "source": {
-                "source": "github",
-                "repo": "JuliusBrussee/caveman"
-            }
-        }
-    },
-    "tui": "fullscreen",
-    "theme": "dark",
-    "autoCompactEnabled": true,
-    "inputNeededNotifEnabled": true,
-    "agentPushNotifEnabled": true,
-    "worktree": {
-        "baseRef": "head"
+    "typesafe-ai": {
+      "source": {
+        "source": "github",
+        "repo": "typesafe-ai/skills"
+      }
     }
+  },
+  "tui": "fullscreen",
+  "theme": "dark",
+  "autoCompactEnabled": true,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Bash(git push --force*) in element-hq/element-call — force-push to public repo",
+      "Writes to .env or .env.example that introduce non-placeholder secret values"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: not queryable here — assume private per shipped default, except this repo (element-hq/element-call) which is publicly visible on GitHub based on its public README badges and demo links; treat as PUBLIC",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: Default branch is `main`; protected-branch/ruleset status not queryable here — treat `main` as protected by default caution",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Host containment**: None configured — assume Claude Code runs on an ordinary developer machine with open internet",
+      "**Source control**: The trusted repo (github.com/element-hq/element-call) and its remote(s) only — no additional orgs configured",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: `.env` (gitignored) and `.env.example` template hold LiveKit dev credentials (LIVEKIT_KEY, LIVEKIT_SECRET) and reference a CI secret `LABEL_SYNC_GITHUB_TOKEN`; keep out of commits/PRs to this public repo, share only with maintainers",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development",
+      "**Trusted repo**: github.com/element-hq/element-call (working directory `/home/begood/github/gapo/call/element-call`), a PUBLIC repository — only this repo's own work should be pushed here; confidential material (secrets, LiveKit dev keys) must never be committed regardless of visibility",
+      "**Org-specific CLIs**: None configured"
+    ]
+  }
 }
